@@ -71,7 +71,7 @@ def get_recordings_storage_usage(request: Request):
 
 
 @router.get("/recordings/summary", dependencies=[Depends(allow_any_authenticated())])
-async def all_recordings_summary(
+def all_recordings_summary(
     request: Request,
     params: MediaRecordingsSummaryQueryParams = Depends(),
     allowed_cameras: list[str] = Depends(get_allowed_cameras_for_filter),
@@ -175,7 +175,7 @@ async def all_recordings_summary(
 @router.get(
     "/{camera_name}/recordings/summary", dependencies=[Depends(require_camera_access)]
 )
-async def recordings_summary(camera_name: str, timezone: str = "UTC"):
+def recordings_summary(camera_name: str, timezone: str = "UTC"):
     """Returns hourly summary for recordings of given camera"""
 
     time_range_query = (
@@ -356,7 +356,7 @@ async def recordings_coverage(
 
 
 @router.get("/{camera_name}/recordings", dependencies=[Depends(require_camera_access)])
-async def recordings(
+def recordings(
     camera_name: str,
     after: float | None = None,
     before: float | None = None,
@@ -396,7 +396,7 @@ async def recordings(
     response_model=list[dict],
     dependencies=[Depends(allow_any_authenticated())],
 )
-async def no_recordings(
+def no_recordings(
     request: Request,
     params: MediaRecordingsAvailabilityQueryParams = Depends(),
     allowed_cameras: list[str] = Depends(get_allowed_cameras_for_filter),

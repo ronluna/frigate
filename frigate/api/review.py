@@ -65,7 +65,7 @@ def get_label_clause(label: str, include_audio: bool = True):
     response_model=list[ReviewSegmentResponse],
     dependencies=[Depends(allow_any_authenticated())],
 )
-async def review(
+def review(
     params: ReviewQueryParams = Depends(),
     current_user: dict = Depends(get_current_user),
     allowed_cameras: list[str] = Depends(get_allowed_cameras_for_filter),
@@ -217,7 +217,7 @@ async def review_ids(request: Request, ids: str):
     response_model=ReviewSummaryResponse,
     dependencies=[Depends(allow_any_authenticated())],
 )
-async def review_summary(
+def review_summary(
     params: ReviewSummaryQueryParams = Depends(),
     current_user: dict = Depends(get_current_user),
     allowed_cameras: list[str] = Depends(get_allowed_cameras_for_filter),
