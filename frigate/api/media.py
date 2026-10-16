@@ -663,7 +663,7 @@ def _build_vod_clip(
     return clip, plan.duration_ms
 
 
-async def _vod_response(
+def _vod_response(
     camera_name: str,
     start_ts: float,
     end_ts: float,
@@ -819,8 +819,12 @@ async def vod_ts(
     end_ts: float,
     force_discontinuity: bool = False,
 ):
-    return await _vod_response(
-        camera_name, start_ts, end_ts, force_discontinuity=force_discontinuity
+    return await asyncio.to_thread(
+        _vod_response,
+        camera_name,
+        start_ts,
+        end_ts,
+        force_discontinuity=force_discontinuity,
     )
 
 
@@ -912,7 +916,8 @@ async def vod_clip(
 ):
     # the tracking-details player corrects its timeline from
     # sequences[0].clips[0].clipFrom
-    return await _vod_response(
+    return await asyncio.to_thread(
+        _vod_response,
         camera_name,
         start_ts,
         end_ts,
@@ -940,7 +945,8 @@ async def vod_ts_stream(
     How the frontend selects quality, now that mappings are always
     single-sequence.
     """
-    return await _vod_response(
+    return await asyncio.to_thread(
+        _vod_response,
         camera_name,
         start_ts,
         end_ts,

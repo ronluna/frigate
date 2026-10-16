@@ -1,6 +1,5 @@
 """Tests for the unified recording coverage resolver."""
 
-import asyncio
 import json
 import unittest
 from types import SimpleNamespace
@@ -280,9 +279,7 @@ class TestVodManifestPolicy(CoverageDbTestCase):
     """Discontinuity policy of the vod mapping builder."""
 
     def _mapping(self, start, end, stream=None):
-        response = asyncio.run(
-            _vod_response("front_door", start, end, stream_preference=stream)
-        )
+        response = _vod_response("front_door", start, end, stream_preference=stream)
         return json.loads(response.body)
 
     def _insert_stream(self, prefix, stream_type, spans):
@@ -372,7 +369,7 @@ class TestVodManifestKeyFrames(CoverageDbTestCase):
     """Mapping emission of real vs placeholder keyFrameDurations."""
 
     def _clips(self, start, end):
-        response = asyncio.run(_vod_response("front_door", start, end))
+        response = _vod_response("front_door", start, end)
         return json.loads(response.body)["sequences"][0]["clips"]
 
     def test_indexed_row_emits_real_gaps(self):
